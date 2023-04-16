@@ -4,24 +4,16 @@ import React, { Component } from 'react'
 import { Redirect } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
+import Stack from '@mui/material/Stack';
+import './home.css'
 
 
-const useStyles = makeStyles((theme) => ({
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
-}));
+const useStyles = theme => ({
+    root: {
+
+    }
+
+})
 
 
 class Home extends Component {
@@ -40,22 +32,25 @@ class Home extends Component {
 
 
     render() {
-        const classes = useStyles();
+        // const { classes } = this.props;
+        // const classes = useStyles();
         const isAuth = this.handleAuth();
 
         if (!isAuth) {
             return <Redirect to={{ pathname: "/signin" }} />;
         }
         return (
-            <div className={classes.root}>
-
-                <img className={classes.avatar} src="/bachkhoa.png" width={500} height={500}/>
-                <Button className={classes.submit} variant="contained" href="/signup" color="primary">
-                    Sign Up
-                </Button>
-                <Button className={classes.submit} variant="contained" href="/login" color="secondary">
-                    Login
-                </Button>
+            <div className='wrapper'>
+                <h1>HCMUT Professional Skill For Engineer Calendar Chatbot</h1>
+                <img className='img' src="/bachkhoa.png" width='375px' height='375px'/>
+                    <Stack spacing={10} direction="row">
+                        <Button classes='but' variant="contained" href="/signup" color="primary">
+                            Sign Up
+                        </Button>
+                        <Button classes='but' variant="contained" href="/login" color='secondary'>
+                            Login
+                        </Button>
+                    </Stack>
             </div>
         );
     }
@@ -63,4 +58,5 @@ class Home extends Component {
 
 
 
-export default withStyles(useStyles, { withTheme: true })(Home);
+// export default withStyles(useStyles, { withTheme: true })(Home);
+export default (Home);

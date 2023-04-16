@@ -68,7 +68,7 @@ const useStyles = makeStyles((theme) => ({
 
 const SettingsPage = () => {
   const classes = useStyles();
-  // const [telegram, setTelegram] = useState("")
+  const [telegram, setTelegram] = useState("")
   const calendarStatus = useSelector(selectCalendarStatus);
   const calendarAuthUrl = useSelector(selectCalendarAuthUrl);
   const token = useSelector(selectToken);
@@ -133,13 +133,13 @@ const SettingsPage = () => {
         console.log(err);
       });
     
-    // our_api
-    //   .checkInfo(token)
-    //   .then((res) => {
-    //     console.log(res.data)
-    //     setTelegram(res.data.telegramUsername)
-    //     dispatch(setCalendarStatus(res.data.authenticated))
-    //   })
+    our_api
+      .checkInfo(token)
+      .then((res) => {
+        console.log(res.data)
+        setTelegram(res.data.telegramUsername)
+        dispatch(setCalendarStatus(res.data.authenticated))
+      })
   }, [token]);
 
   return (
@@ -162,7 +162,7 @@ const SettingsPage = () => {
         calendar auth status:{" "}
         {calendarStatus ? "AUTHENTICATED" : "NOT AUTHENTICATED"}{" "}
       </h3>
-      {/* <TextField id="telegram" label="Your Telegram username" variant="outlined" value={telegram} onChange={(e) => setTelegram(e.target.value)}/>
+      <TextField id="telegram" label="Your Telegram username" variant="outlined" value={telegram} onChange={(e) => setTelegram(e.target.value)}/>
       <Button
         variant="contained"
         color="primary"
@@ -173,7 +173,7 @@ const SettingsPage = () => {
         }
       >
       Submit
-      </Button> */}
+      </Button>
       <Button
         variant="contained"
         color="primary"

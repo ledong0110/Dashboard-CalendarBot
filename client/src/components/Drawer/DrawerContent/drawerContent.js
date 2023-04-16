@@ -29,11 +29,11 @@ const list = [
     icon: <Publish />,
     href: "/add-member"
   },
-  {
-    primaryText: 'New Feature',
-    icon: <Schedule />,
-    href: "/"
-  },
+  // {
+  //   primaryText: 'New Feature',
+  //   icon: <Schedule />,
+  //   href: "/"
+  // },
 //   {
 //     primaryText: 'Starred',
 //     icon: <Star />,

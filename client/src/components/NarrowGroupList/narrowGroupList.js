@@ -108,7 +108,7 @@ const NarrowGroupList = () => {
                     {element.name[0]}
                   </Avatar>
                 </ListItemIcon>
-                <ListItemText primary={element.name} />
+                <ListItemText primary={element.name.slice(6,element.name.length)} />
 
                 <ModalForEdit element={element}/> 
 

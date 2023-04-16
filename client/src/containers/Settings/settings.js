@@ -4,12 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import myTheme from "../../themes/themes";
 import {
   makeStyles,
-  Button,
   TextField,
   Typography,
   Box,
 } from "@material-ui/core";
-import Autocomplete from "@material-ui/lab/Autocomplete";
+import Stack from '@mui/material/Stack';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import Button from '@mui/material/Button';
 import our_api from "../../utils/requests";
 import {
   selectCalendarStatus,
@@ -21,6 +22,7 @@ import { selectEmail, selectUserType } from "../../reducers/navbarSlice";
 import { selectToken } from "../../reducers/authSlice";
 import { selectCompanyMembers } from "../../reducers/teamSlice";
 import Dropzone from "react-dropzone";
+import './setting.css'
 
 //our_api.allMembersNotBelongToAnyCompany;
 
@@ -65,6 +67,17 @@ const useStyles = makeStyles((theme) => ({
     border: "5px dashed #bbbbbb",
   },
 }));
+
+const theme = createTheme({
+  palette: {
+      bk: {
+          // light: will be calculated from palette.primary.main,
+          main: 'rgb(20, 136, 219)',
+          // dark: will be calculated from palette.primary.main,
+          // contrastText: will be calculated to contrast with palette.primary.main
+      }
+  },
+});
 
 const SettingsPage = () => {
   const classes = useStyles();
@@ -143,176 +156,52 @@ const SettingsPage = () => {
   }, [token]);
 
   return (
-    <div className={classes.root}>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={handleCalendarAuth}
-        disabled={calendarAuthUrl === "" ? true : false}
-      >
-        {calendarStatus ? "Reauthenticate Google Calendar":"Authenticate Google Calendar"}
-      </Button>
-      <h5>
-        {" "}
-        {calendarAuthUrl === ""
-          ? "there is a problem, you cannot authenticate right now."
-          : ""}{" "}
-      </h5>
-      <h3>
-        calendar auth status:{" "}
-        {calendarStatus ? "AUTHENTICATED" : "NOT AUTHENTICATED"}{" "}
-      </h3>
-      <TextField id="telegram" label="Your Telegram username" variant="outlined" value={telegram} onChange={(e) => setTelegram(e.target.value)}/>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() =>
-          our_api.postTelegramUsername(token, telegram).then((res) => {
-            console.log("tele sub ", res.data.msg)
-          })
-        }
-      >
-      Submit
-      </Button>
-      <Button
-        variant="contained"
-        color="primary"
-        onClick={() =>
-          our_api.getCalendarEvents(token).then((res) => {
-            console.log("DATAAA", res.data.data);
-          })
-        }
-      >
-        Get Calendar Events
-      </Button>
-      {userType === "company_admin" ? (
-        <>
-          <Autocomplete
-            className={classes.autoComplete}
-            multiple
-            id="tags-standard"
-            onChange={onTagsChange}
-            options={allMembersToAddCompany}
-            value={value.tags}
-            limitTags={2}
-            //defaultValue={["cavitcakir@sabanciuniv.edu", "kayakapagan@sabanciuniv.edu", "gokberkyar@sabanciuniv.edu", "def", "ghj", "def", "ghj", "def", "ghj", "def", "ghj", "def", "ghj", "def", "ghj", "def", "ghj", "def", "ghj", "def", "ghj"]}
-            getOptionLabel={(option) => option.email}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                variant="outlined"
-                label="All Users"
-                placeholder="All Users"
-              />
-            )}
-          />
-          <Dropzone
-            multiple={false}
-            onDrop={onDrop}
-            accept={
-              "application/json, .csv, text/csv, application/vnd.ms-excel, application/csv, text/x-csv, application/x-csv, text/comma-separated-values, text/x-comma-separated-values"
-            }
-          >
-            {({ getRootProps, getInputProps, isDragActive }) => (
-              <div
-                {...getRootProps()}
-                className={isDragActive ? classes.hover : classes.a}
-                // style={{
-                //   width: 350,
-                //   height: 250,
-                //   border: "5px dashed #bbbbbb",
-
-                //   //backgroundSize: "cover",
-                //   //backgroundImage:
-                //   //  "url(https://colorlib.com/wp/wp-content/uploads/sites/2/jquery-file-upload-scripts.png)",
-                // }}
+    <div className="cover">
+      <div className='container'>
+        <ThemeProvider theme={theme}>
+          <div className='google'>
+            <h2 className="text">Reauthenticate with your calendar</h2>
+            <Button
+                sx={{color: 'white'}}
+                variant="contained"
+                color="bk"
+                onClick={handleCalendarAuth}
+                disabled={calendarAuthUrl === "" ? true : false}
+            >
+                {calendarStatus ? "Reauthenticate Google Calendar":"Authenticate Google Calendar"}
+            </Button>
+            <h5 style={{marginBottom: '0.2rem '}}>
+                {" "}
+                {calendarAuthUrl === ""
+                ? "there is a problem, you cannot authenticate right now."
+                : ""}{" "}
+            </h5>
+            <h3>
+                calendar auth status:{" "}
+                {calendarStatus ? "AUTHENTICATED" : "NOT AUTHENTICATED"}{" "}
+            </h3>
+          </div>
+          <div className='google'>
+            <h2 className="text">Please leave your telegram username</h2>
+            <Stack spacing={0.5} direction="column">
+              <TextField id="telegram" label="Your Telegram username" variant="outlined" value={telegram} onChange={(e) => setTelegram(e.target.value)}/>
+              <Button
+                  sx={{color: 'white'}}
+                  variant="contained"
+                  color="bk"
+                  onClick={() =>
+                    our_api.postTelegramUsername(token, telegram).then((res) => {
+                        console.log("tele sub ", res.data.msg)
+                    })
+                  }
               >
-                <Typography
-                  className={classes.topMargin}
-                  component="h2"
-                  align="center"
-                >
-                  Drag and Drop Your Files
-                </Typography>
-                <Typography
-                  className={classes.topMargin}
-                  component="h4"
-                  align="center"
-                >
-                  or
-                </Typography>
-                <Box textAlign="center" className={classes.topMargin}>
-                  <Button
-                    variant="outlined"
-                    color="primary"
-                    style={{ justifyContent: "center" }}
-                    size="large"
-                  >
-                    Browse File
-                  </Button>
-                </Box>
-                {file !== "yok" ? (
-                  <Typography
-                    className={classes.topMargin}
-                    component="h4"
-                    align="center"
-                  >
-                    uploaded file: {file.name}
-                  </Typography>
-                ) : (
-                  <></>
-                )}
+              Submit
+              </Button>
+            </Stack>
+          </div>
+        </ThemeProvider>
+      </div>
 
-                <input {...getInputProps()} />
-              </div>
-            )}
-          </Dropzone>
-          <Button
-            style={{ marginTop: 20 }}
-            variant="contained"
-            color="secondary"
-            onClick={() => {
-              const memberList = value.tags.map((item) => item._id);
-              if (memberList.length !== 0) {
-                our_api
-                  .addMembersToMyCompany(token, memberList)
-                  .then((res) => {
-                    console.log("RESSS", res);
-                    alert("Members are added by text field");
-                    setValue({ tags: [] });
-                  })
-                  .catch((err) => {
-                    alert("something not good happend while adding members");
-                    console.log(err);
-                  });
-              }
-              console.log("value.tags", "===>", value.tags);
-
-              if (file !== "yok") {
-                our_api
-                  .addMembersToMyCompanyByCsv(token, file)
-                  .then((res) => {
-                    console.log("RESSS", res);
-                    alert("Members are added by file");
-                  })
-                  .catch((err) => {
-                    alert("something not good happend while adding members");
-                    console.log(err);
-                  });
-              }
-              if (file === "yok" && memberList.length === 0) {
-                alert(
-                  "You need to add people from text box or select a file to add peope to your company!"
-                );
-              }
-            }}
-          >
-            Add to Company
-          </Button>
-        </>
-      ) : (
-        <></>
-      )}
     </div>
   );
 };

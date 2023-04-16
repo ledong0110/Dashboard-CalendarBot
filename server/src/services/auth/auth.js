@@ -30,6 +30,29 @@ passport.use(
 );
 
 passport.use(
+  "login_telegram",
+  new localStrategy(
+    {
+      usernameField: "telegramAccount",
+      passwordField: "randomString",
+    },
+    async(telegramAccount, randomString, done) => {
+      console.log(telegramAccount, ' joined!')
+
+      try {
+        const user = await userModel.findOne({ telegramAccount });
+        if (!user) {
+          return done(null, false, { message: "User not register telegram username" });
+        }
+        return done(null, user, { message: "Logged in Successfully" });
+      } catch (error) {
+        return done(error);
+      }
+    }
+  )
+)
+
+passport.use(
   "login",
   new localStrategy(
     {

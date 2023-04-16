@@ -53,7 +53,7 @@ router.post("/get_url", async (req, res) => {
 });
 
 router.post("/insert_event", async (req, res) => {
-  const attendees_emails = req.body.attendees_emails;
+  const attendees_emails = Array.isArray(req.body.attendees_emails) ? req.body.attendees_emails: [req.body.attendees_emails];
   const start_time = req.body.start_time;
   const end_time = req.body.end_time;
   const token = req.body.token;
@@ -84,17 +84,17 @@ router.post("/insert_event", async (req, res) => {
 
     // const calendarEvents = await listEvents(oauth2Client, docs.email);
     // const calendar = google.calendar({version: 'v3', oauth2Client});
-
+    
     let event = {
       summary: event_name,
       description: "This meeting is created by RASACC01 bot",
       start: {
         dateTime: start_time, // Format: '2015-05-28T09:00:00-07:00'
-        timeZone: "Europe/Istanbul",
+        timeZone: "Asia/Ho_Chi_Minh",
       },
       end: {
         dateTime: end_time,
-        timeZone: "Europe/Istanbul",
+        timeZone: "Asia/Ho_Chi_Minh",
       },
       attendees: attendees_emails.map((email) => ({ email: email })),
       reminders: {
@@ -166,21 +166,23 @@ const listEvents = async (auth, email) => {
       if (events.length) {
         // console.log('Upcoming 10 events:');
         result = events.map((event, i) => {
+          console.log("consolelogevent: ", event.summary)
           const start = event.start.dateTime || event.start.date;
           //   console.log(`${start} - ${event.summary}`);
           if (
             event.start.dateTime === null ||
             event.start.dateTime === undefined
           ) {
-            console.log("consolelogevent: ", event, "START: ", start);
+            console.log("consolelogevent: ", event.summary, "START: ", start);
             return [start + "T00:00:00+07:00", start + "T23:59:59+07:00"];
           }
-          return [event.start.dateTime, event.end.dateTime];
+          return [event.start.dateTime, event.end.dateTime, event.summary];
         });
         // console.log("should be",result);
         return { events: result, email: email };
       } else {
         console.log("No upcoming events found.");
+        return { events: [], email: email };
       }
     })
     .catch((err) => {

@@ -45,7 +45,8 @@ const  ModalForAdd = (props) => {
   };
 
   const onAdd = () => {
-    our_api.addGroup(token,textField)
+    const groupname = 'group_' + textField
+    our_api.addGroup(token,groupname)
     .then( () => {
         dispatch(setLoadingNeededTeams(true));
         alert("Group Added Succesfully");
@@ -55,7 +56,7 @@ const  ModalForAdd = (props) => {
   }
 
   const handleChange = (e) => {
-    let isMatch = e.target.value.match(/group_\w+/g);
+    let isMatch = e.target.value.match(/\w+/g);
     setTextField(e.target.value)
     if (isMatch && isMatch[0] === e.target.value) {
       setIsGroupNameWrong(false);
@@ -71,7 +72,7 @@ const  ModalForAdd = (props) => {
 
   return (
     <div>
-        <Button variant="contained" color="secondary" className={classes.button} onClick={() => {setTextField(""); handleOpen();}}>
+        <Button variant="contained" color="primary" className={classes.button} onClick={() => {setTextField(""); handleOpen();}}>
               Add Group
           </Button>
         <Modal
@@ -99,14 +100,15 @@ const  ModalForAdd = (props) => {
                 <span>
                   <br/>
                   <br/>
-                  <div>Grup Name is not correct it should start with</div>
-                  <div>"group_" and there should not be any spaces!</div>
+                  {/* <div>Group Name is not correct it should start with</div> */}
+                  <div>Your group name is invalid! It should</div>
+                  <div>not contain any space</div>
                 </span>
                 : <span></span>
               }
               <Button 
                 variant="contained" 
-                color="secondary" 
+                color="primary" 
                 onClick={(evt) =>  {handleClose();onAdd();}}  
                 className={classes.button}
               >

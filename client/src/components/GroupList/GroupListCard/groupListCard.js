@@ -58,7 +58,7 @@ const GroupListCard = (props) => {
                   {props.data.name[0]}
                 </Avatar>
                 <Typography variant="subtitle1" component="h2">
-                  {props.data.name}
+                  {props.data.name.slice(6,props.data.name.length)}
                 </Typography>
             </Button>
             <Button className={classes.buttonMembers}>

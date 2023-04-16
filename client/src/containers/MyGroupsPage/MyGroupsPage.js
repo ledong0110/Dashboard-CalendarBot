@@ -54,7 +54,7 @@ const MyGroupsPage = () => {
         <div className={classes.root}>
             <div className={classes.header}>
                 <h1>MY GROUPS</h1>
-                <Button className={classes.button} color="secondary" variant="contained" >
+                <Button className={classes.button} color="primary" variant="contained" >
                     Add Group
                 </Button>
             </div>
